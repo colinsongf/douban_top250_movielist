@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import csv
 
 init_url='http://movie.douban.com/top250'
 
@@ -22,8 +23,14 @@ def parse_html(html):
 
 url=init_url
 movie_list=[]
-while url:
-    html=get_html(url)
-    movies,url=parse_html(html)
-    movie_list.extend(movies)
-print(movie_list)
+csvfile=open('../douban/douban.csv','w+')
+try:
+    writer=csv.writer(csvfile)
+    while url:
+        html=get_html(url)
+        movies,url=parse_html(html)
+        #movie_list.extend(movies)
+        writer.writerow(movies)
+    #print(movie_list)
+finally:
+    csvfile.close()
